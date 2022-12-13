@@ -10,7 +10,7 @@ if __name__ == '__main__':
     import factory
     elves_team = factory.ElvesTeam(DATAS_URL)
     elves_team.load_elves()
-    print(f"Elf with max calories has : {elves_team.max_calories_among_elves()} calories")
-
+    print(f"Elf with max calories has : {elves_team.max_calories_among_elves(1)} calories")
+    print(f"the three first Elves with max calories has : {elves_team.max_calories_among_elves(3)} calories")
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/

@@ -51,9 +51,14 @@ class ElvesTeam(object):
     def sort_elves_by_calories(self):
         return self.elves.sort(key=lambda elf: elf.total_of_calories, reverse=True)
 
-    def max_calories_among_elves(self):
+    def max_calories_among_elves(self, number_first_elves=1):
         self.sort_elves_by_calories()
-        return self.elves[0]
+        sum_calories = 0
+        i = 0
+        while i<number_first_elves:
+            sum_calories += self.elves[i].total_of_calories
+            i += 1
+        return sum_calories
 
     def print_elves(self):
         for elf in self.elves:
