@@ -55,7 +55,7 @@ class ElvesTeam(object):
         self.sort_elves_by_calories()
         sum_calories = 0
         i = 0
-        while i<number_first_elves:
+        while i < number_first_elves:
             sum_calories += self.elves[i].total_of_calories
             i += 1
         return sum_calories
