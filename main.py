@@ -1,9 +1,6 @@
-from day_3 import day3
+from day_4 import day4
 
 if __name__ == '__main__':
-    day3()
-    print(f"a:{ord('a')}")
-    print(f"z:{ord('z')}")
-    print(f"A:{ord('A')}")
-    print(f"Z:{ord('Z')}")
+    day4()
+
 
