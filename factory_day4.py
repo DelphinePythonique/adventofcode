@@ -22,6 +22,26 @@ class Pair(object):
         self.elf_two = elf_two
 
     @property
+    def is_sections_one_is_partial_overloop_by_two(self):
+        return (
+            (self.elf_one.begin_section >= self.elf_two.begin_section)
+            and (self.elf_one.begin_section <= self.elf_two.end_section)
+        ) or (
+            (self.elf_one.end_section >= self.elf_two.begin_section)
+            and (self.elf_one.end_section <= self.elf_two.end_section)
+        )
+
+    @property
+    def is_sections_two_is_partial_overloop_by_one(self):
+        return (
+            (self.elf_two.begin_section >= self.elf_one.begin_section)
+            and (self.elf_two.begin_section <= self.elf_one.end_section)
+        ) or (
+            (self.elf_two.end_section >= self.elf_one.begin_section)
+            and (self.elf_two.end_section <= self.elf_one.end_section)
+        )
+
+    @property
     def is_sections_one_is_into_sections_two(self):
         return (self.elf_one.begin_section >= self.elf_two.begin_section) and (
             self.elf_one.end_section <= self.elf_two.end_section
@@ -35,7 +55,17 @@ class Pair(object):
 
     @property
     def is_totally_overlap(self):
-        return self.is_sections_one_is_into_sections_two or self.is_sections_two_is_into_sections_one
+        return (
+            self.is_sections_one_is_into_sections_two
+            or self.is_sections_two_is_into_sections_one
+        )
+
+    @property
+    def is_partial_overlap(self):
+        return (
+            self.is_sections_two_is_partial_overloop_by_one
+            or self.is_sections_one_is_partial_overloop_by_two
+        )
 
 
 class Pairs(object):
@@ -64,6 +94,7 @@ class Pairs(object):
             print(
                 f"1:{begin_section_of_first_elf} to {end_section_of_first_elf}/ 2:{begin_section_of_second_elf} to {end_section_of_second_elf} "
             )
+
     @property
     def how_many_assignement_pairs_is_totally_overlap(self):
         number_pairs = 0
@@ -71,5 +102,14 @@ class Pairs(object):
             if pair.is_totally_overlap:
                 number_pairs += 1
 
+        return number_pairs
+
+
+    @property
+    def how_many_assignement_pairs_is_partial_overlap(self):
+        number_pairs = 0
+        for pair in self.pairs:
+            if pair.is_partial_overlap:
+                number_pairs += 1
 
         return number_pairs

@@ -8,3 +8,4 @@ def day4():
 
     pairs.load_pairs()
     print(f"The number of paris totally overlap is: {pairs.how_many_assignement_pairs_is_totally_overlap}")
+    print(f"The number of paris totally overlap is: {pairs.how_many_assignement_pairs_is_partial_overlap}")
