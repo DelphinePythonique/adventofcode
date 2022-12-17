@@ -8,5 +8,5 @@ def day5():
 
     datas.load_datas()
     print(f"before: {datas.warehouse.elves_message}")
-    datas.warehouse.do_transfer()
+    datas.warehouse.do_transfer(factory_day5.rule["RULE_MOVE_ALL"].value)
     print(f"after: {datas.warehouse.elves_message}")

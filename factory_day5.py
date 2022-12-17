@@ -10,6 +10,9 @@ SESSION_COOKIE = os.environ["SESSION_COOKIE"]
 COOKIES = {"session": SESSION_COOKIE}
 HEADERS = {"User-Agent": "USER_AGENT"}
 
+class rule(Enum):
+    RULE_MOVE_ONE_BY_ONE = 1  # move crate, one by one
+    RULE_MOVE_ALL = 2  # move all crates
 
 class Stack(object):
     def __init__(self, code):
@@ -34,9 +37,9 @@ class Warehouse(object):
     def find_stack(self, code):
         return [stack for stack in self.stacks if stack.code == code][0]
 
-    def do_transfer(self):
+    def do_transfer(self, choice_rule=rule["RULE_MOVE_ONE_BY_ONE"].value):
         for move in self.moves:
-            crates_to_transfer = self.extract_crates(move.from_stack, move.quantity)
+            crates_to_transfer = self.extract_crates(move.from_stack, move.quantity, choice_rule)
             move.to_stack.crates.extend(crates_to_transfer)
 
     @property
@@ -47,11 +50,19 @@ class Warehouse(object):
         return message
 
 
-    def extract_crates(self, from_stack: Stack, quantity):
+    def extract_crates(self, from_stack: Stack, quantity, choice_rule):
         crates_to_transfer = []
         for i in range(0, quantity):
             crates_to_transfer.append(from_stack.crates.pop())
-        return crates_to_transfer
+
+        if choice_rule == rule["RULE_MOVE_ONE_BY_ONE"].value:
+            return crates_to_transfer
+
+        if choice_rule == rule["RULE_MOVE_ALL"].value:
+            crates_to_transfer.reverse()
+            return crates_to_transfer
+
+        return None
 
 class Move(object):
     def __init__(self, quantity, from_stack, to_stack):
