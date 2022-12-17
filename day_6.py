@@ -7,4 +7,4 @@ def day6():
     datas = factory_day6.Stream(DATAS_DAY6_URL)
 
     datas.load_datas()
-    print(f"message begin: {datas.begin_of_message(14)}")
+    print(f"message begin by: {datas.begin_of_message(14)}")
