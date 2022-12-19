@@ -1,6 +1,6 @@
-from day_7 import day7
+from day_8 import day8
 
 if __name__ == '__main__':
-    day7()
+    day8()
 
 
