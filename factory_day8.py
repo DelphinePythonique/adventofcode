@@ -18,9 +18,10 @@ class Tree(object):
         self.y = y
         self.size = size
         self.visible = None
+        self.scenic_score = 0
 
     def __repr__(self):
-        return f"x:{self.x}- y:{self.y} - size:{self.size}"
+        return f"x:{self.x}- y:{self.y} - size:{self.size} - scenic score:{self.scenic_score}"
 
 
 class Stream(object):
@@ -30,13 +31,16 @@ class Stream(object):
         self.grid = []
         self.grid_transpose = []
 
+    def sorted_tree_by_scenic_score(self):
+        return sorted(self.trees, key=lambda x: x.scenic_score)
+
     def tree_is_visible(self, tree: Tree):
         if tree.x in (0, len(self.grid[0]) - 1) or tree.y in (0, len(self.grid) - 1):
             print(f"tree:  {tree} cause edge")
             tree.visible = True
             return True
         # left_control:
-        max_left = max(self.grid[tree.y][0: tree.x])
+        max_left = max(self.grid[tree.y][0 : tree.x])
         if tree.size > max_left:
             print(f"tree:  {tree} visible by left max_left is {max_left}")
             tree.visible = True
@@ -50,14 +54,14 @@ class Stream(object):
             return True
 
         # top_control:
-        max_top = max(self.grid_transpose[tree.x][0: tree.y])
+        max_top = max(self.grid_transpose[tree.x][0 : tree.y])
         if tree.size > max_top:
             print(f"tree:  {tree} visible by top max_top is {max_top}")
             tree.visible = True
             return True
 
         # right_control
-        max_bottom = max(self.grid_transpose[tree.x][tree.y + 1:])
+        max_bottom = max(self.grid_transpose[tree.x][tree.y + 1 :])
         if tree.size > max_bottom:
             print(f"tree:  {tree} visible bottom max_bottom is {max_bottom}")
             tree.visible = True
@@ -87,6 +91,7 @@ class Stream(object):
             for x in range(0, max_column):
                 self.trees.append(Tree(x, y, lines[y][x]))
         self.populate_visible_tree_attribute()
+        self.populate_scenic_score()
         coucou = "ou"
 
     def populate_visible_tree_attribute(self):
@@ -102,3 +107,50 @@ class Stream(object):
             if tree.visible:
                 count_visible_tree += 1
         return count_visible_tree
+
+    def populate_scenic_score(self):
+
+        for tree in self.trees:
+            self.calculate_scenic_score(tree)
+
+    def calculate_scenic_score(self, tree):
+        if tree.x in (0, len(self.grid[0]) - 1) or tree.y in (0, len(self.grid) - 1):
+            tree.scenic_score = 0
+            print(f"tree:  {tree} -  cause edge")
+            return tree.scenic_score
+
+        # left_control:
+        score_left = 0
+        for neighboring_tree_size in reversed(self.grid[tree.y][0 : tree.x]):
+            score_left += 1
+            if neighboring_tree_size >= tree.size:
+                break
+        print(f"tree:  {tree} visible score_left is {score_left}")
+
+        # right_control
+        score_right = 0
+        for neighboring_tree_size in self.grid[tree.y][tree.x + 1:]:
+            score_right += 1
+            if neighboring_tree_size >= tree.size:
+                break
+        print(f"tree:  {tree} -  score_right is {score_right}")
+
+        # top_control:
+        score_top = 0
+        for neighboring_tree_size in reversed(self.grid_transpose[tree.x][0 : tree.y]):
+            score_top += 1
+
+            if neighboring_tree_size >= tree.size:
+                break
+        print(f"tree:  {tree} score_top is {score_top}")
+
+        # bottom_control
+        score_bottom = 0
+        for neighboring_tree_size in self.grid_transpose[tree.x][tree.y + 1 :]:
+            score_bottom += 1
+            if neighboring_tree_size >= tree.size:
+                break
+        print(f"tree:  {tree} score_bottom is {score_bottom}")
+
+        tree.scenic_score = score_top * score_right * score_left * score_bottom
+        return tree.scenic_score
