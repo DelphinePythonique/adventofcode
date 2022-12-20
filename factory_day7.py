@@ -10,6 +10,29 @@ SESSION_COOKIE = os.environ["SESSION_COOKIE"]
 COOKIES = {"session": SESSION_COOKIE}
 HEADERS = {"User-Agent": "USER_AGENT"}
 
+DATAS_DAY7_URL = "https://adventofcode.com/2022/day/7/input"
+
+
+def day7():
+    datas = FileSystem(DATAS_DAY7_URL)
+
+    datas.load_datas()
+    directories = datas.sorted_directories_by_size()
+    sum_size = 0
+    for directory in directories:
+        if directory.size <= 100000:
+            sum_size += directory.size
+            print(
+                f"name: {directory.name} - path: {directory.path} - size: {directory.size}"
+            )
+    print(f"sum is {sum_size}")
+
+    for directory in directories:
+        if directory.size >= 1072511:
+            print(
+                f"result: name: {directory.name} - path: {directory.path} - size: {directory.size}"
+            )
+
 
 class TypeNode(Enum):
     FILE = 1
@@ -82,7 +105,7 @@ class FileSystem(object):
         for instruction in datas_text.split(sep=None):
 
             if instruction[:4] == "$-cd":
-                cd_match = re.match("\$-cd-(.*?)$", instruction) # noqa
+                cd_match = re.match("\$-cd-(.*?)$", instruction)  # noqa
                 directory_name = cd_match.group(1)
                 if directory_name not in ("/", ".."):
                     pwd.append(directory_name)
@@ -107,7 +130,7 @@ class FileSystem(object):
                 )
                 continue
 
-            file_match = re.match("(\d+)-(.*?)$", instruction) # noqa
+            file_match = re.match("(\d+)-(.*?)$", instruction)  # noqa
             print(
                 f"name file: {file_match.group(2)}- taille: {file_match.group(1)}- pwd: {'/'.join(pwd)}"
             )

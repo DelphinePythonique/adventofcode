@@ -9,6 +9,17 @@ SESSION_COOKIE = os.environ["SESSION_COOKIE"]
 COOKIES = {"session": SESSION_COOKIE}
 HEADERS = {"User-Agent": "USER_AGENT"}
 
+DATAS_DAY5_URL = "https://adventofcode.com/2022/day/5/input"
+
+
+def day5():
+    datas = Moves(DATAS_DAY5_URL)
+
+    datas.load_datas()
+    print(f"before: {datas.warehouse.elves_message}")
+    datas.warehouse.do_transfer(rule["RULE_MOVE_ALL"].value)
+    print(f"after: {datas.warehouse.elves_message}")
+
 
 class rule(Enum):
     RULE_MOVE_ONE_BY_ONE = 1  # move crate, one by one

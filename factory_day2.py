@@ -8,6 +8,17 @@ SESSION_COOKIE = os.environ["SESSION_COOKIE"]
 COOKIES = {"session": SESSION_COOKIE}
 HEADERS = {"User-Agent": "USER_AGENT"}
 
+DATAS_DAY2_URL = "https://adventofcode.com/2022/day/2/input"
+
+
+def day2():
+    rounds = Rounds(DATAS_DAY2_URL)
+    rounds.load_rounds()
+    print(f"total gain is: {rounds.gain}")
+    rounds.rounds = []
+    rounds.load_rounds(round_rule["RULE_RESULT"].value)
+    print(f"total gain is: {rounds.gain}")
+
 
 class type_opponent_object(Enum):
     A = "ROCK"

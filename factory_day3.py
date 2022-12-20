@@ -8,6 +8,23 @@ SESSION_COOKIE = os.environ["SESSION_COOKIE"]
 COOKIES = {"session": SESSION_COOKIE}
 HEADERS = {"User-Agent": "USER_AGENT"}
 
+DATAS_DAY3_URL = "https://adventofcode.com/2022/day/3/input"
+
+
+def day3():
+    rucksacks = Rucksacks(DATAS_DAY3_URL)
+
+    rucksacks.load_rucksacks()
+
+    print(
+        f"total sum_prioruties is: {rucksacks.sum_priorities} for rule divide rucksack by 2"
+    )
+    rucksacks.rucksacks = []
+    rucksacks.load_rucksacks(rule["RULE_THREE_RUCKSACS"].value)
+    print(
+        f"total sum_prioruties is: {rucksacks.sum_priorities} for rule three rucksacks"
+    )
+
 
 class rule(Enum):
     RULE_DIVIDE_RUCKSACK_BY_2 = 1  # compare 2 half rucksacks

@@ -6,6 +6,17 @@ COOKIES = {"session": SESSION_COOKIE}
 HEADERS = {"User-Agent": "USER_AGENT"}
 
 
+DATAS_DAY8_URL = "https://adventofcode.com/2022/day/8/input"
+
+
+def day8():
+    datas = Stream(DATAS_DAY8_URL)
+
+    datas.load_datas()
+    print(f"{datas.count_visible_tree()} visibles trees")
+    print(datas.sorted_tree_by_scenic_score())
+
+
 class Tree(object):
     def __init__(self, x, y, size):
         self.x = x
@@ -101,7 +112,6 @@ class Stream(object):
         return count_visible_tree
 
     def populate_scenic_score(self):
-
         for tree in self.trees:
             self.calculate_scenic_score(tree)
 

@@ -8,6 +8,15 @@ HEADERS = {"User-Agent": "USER_AGENT"}
 
 NUMBER_ITEM_TO_CHECK = 4
 
+DATAS_DAY6_URL = "https://adventofcode.com/2022/day/6/input"
+
+
+def day6():
+    datas = Stream(DATAS_DAY6_URL)
+
+    datas.load_datas()
+    print(f"message begin by: {datas.begin_of_message(14)}")
+
 
 class Stream(object):
     def __init__(self, url_to_load):
