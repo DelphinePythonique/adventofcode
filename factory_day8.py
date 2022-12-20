@@ -1,10 +1,4 @@
-import operator
 import os
-import re
-from enum import Enum
-from itertools import chain
-from typing import List, Dict
-
 import requests
 
 SESSION_COOKIE = os.environ["SESSION_COOKIE"]
@@ -71,7 +65,6 @@ class Stream(object):
         return False
 
     def load_datas(self):
-        ligne = 1
         request_to_load = requests.get(
             self.url_to_load, cookies=COOKIES, headers=HEADERS
         )
@@ -92,7 +85,6 @@ class Stream(object):
                 self.trees.append(Tree(x, y, lines[y][x]))
         self.populate_visible_tree_attribute()
         self.populate_scenic_score()
-        coucou = "ou"
 
     def populate_visible_tree_attribute(self):
         count_visible_tree = 0
@@ -129,7 +121,7 @@ class Stream(object):
 
         # right_control
         score_right = 0
-        for neighboring_tree_size in self.grid[tree.y][tree.x + 1:]:
+        for neighboring_tree_size in self.grid[tree.y][tree.x + 1 :]:
             score_right += 1
             if neighboring_tree_size >= tree.size:
                 break

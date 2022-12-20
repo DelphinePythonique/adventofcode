@@ -1,7 +1,6 @@
 import os
 import re
 from enum import Enum
-from itertools import chain
 from typing import List
 
 import requests
@@ -10,9 +9,11 @@ SESSION_COOKIE = os.environ["SESSION_COOKIE"]
 COOKIES = {"session": SESSION_COOKIE}
 HEADERS = {"User-Agent": "USER_AGENT"}
 
+
 class rule(Enum):
     RULE_MOVE_ONE_BY_ONE = 1  # move crate, one by one
     RULE_MOVE_ALL = 2  # move all crates
+
 
 class Stack(object):
     def __init__(self, code):
@@ -39,7 +40,9 @@ class Warehouse(object):
 
     def do_transfer(self, choice_rule=rule["RULE_MOVE_ONE_BY_ONE"].value):
         for move in self.moves:
-            crates_to_transfer = self.extract_crates(move.from_stack, move.quantity, choice_rule)
+            crates_to_transfer = self.extract_crates(
+                move.from_stack, move.quantity, choice_rule
+            )
             move.to_stack.crates.extend(crates_to_transfer)
 
     @property
@@ -48,7 +51,6 @@ class Warehouse(object):
         for stack in self.stacks:
             message += stack.crates[-1]
         return message
-
 
     def extract_crates(self, from_stack: Stack, quantity, choice_rule):
         crates_to_transfer = []
@@ -63,6 +65,7 @@ class Warehouse(object):
             return crates_to_transfer
 
         return None
+
 
 class Move(object):
     def __init__(self, quantity, from_stack, to_stack):
@@ -107,7 +110,7 @@ class Moves(object):
                 datas_position = False
             if datas_position:
                 positions_match = re.match(
-                    "(\w+|---)-(\w+|---)-(\w+|---)-(\w+|---)-(\w+|---)-(\w+|---)-(\w+|---)-(\w+|---)-(\w+|---)",
+                    "(\w+|---)-(\w+|---)-(\w+|---)-(\w+|---)-(\w+|---)-(\w+|---)-(\w+|---)-(\w+|---)-(\w+|---)", # noqa
                     data_text,
                 )
                 positions.append(
@@ -126,17 +129,20 @@ class Moves(object):
 
             if data_text[:4] == "move":
                 moves_match = re.match(
-                    "move-(\d+)-from-(\d+)-to-(\d+)",
+                    "move-(\d+)-from-(\d+)-to-(\d+)", # noqa
                     data_text,
                 )
                 moves.append(
-                    (int(moves_match.group(1)), int(moves_match.group(2)), int(moves_match.group(3)))
+                    (
+                        int(moves_match.group(1)),
+                        int(moves_match.group(2)),
+                        int(moves_match.group(3)),
+                    )
                 )
         positions.reverse()
         positions_by_stack = list(map(list, zip(*positions)))
         self.populate_warehouse(positions_by_stack)
         self.populate_moves(moves)
-        coucou = "that-all"
 
     def populate_moves(self, moves):
         for move in moves:
@@ -151,5 +157,3 @@ class Moves(object):
             for crate in positions_by_stack[i - 1]:
                 if crate != "---":
                     self.warehouse.stacks[i - 1].add_crate(crate)
-
-

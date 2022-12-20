@@ -1,7 +1,5 @@
 import os
 import re
-from enum import Enum
-from itertools import chain
 
 import requests
 
@@ -82,7 +80,7 @@ class Pairs(object):
         )
         pairs_text = request_to_load.text.replace(" ", "-")
         for pair_text in pairs_text.split(sep=None):
-            sections_limit = re.match("(\d+)-(\d+),(\d+)-(\d+)", pair_text)
+            sections_limit = re.match("(\d+)-(\d+),(\d+)-(\d+)", pair_text)  # noqa
             begin_section_of_first_elf = int(sections_limit.group(1))
             end_section_of_first_elf = int(sections_limit.group(2))
             begin_section_of_second_elf = int(sections_limit.group(3))
@@ -103,7 +101,6 @@ class Pairs(object):
                 number_pairs += 1
 
         return number_pairs
-
 
     @property
     def how_many_assignement_pairs_is_partial_overlap(self):

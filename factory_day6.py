@@ -25,11 +25,10 @@ class Stream(object):
         print(datas_text)
         self.stream = datas_text
 
-
     def begin_of_message(self, number_of_item_to_check):
         i = 0
-        while i < len(self.stream)-number_of_item_to_check:
-            array_to_check = self.stream[i:i+number_of_item_to_check]
+        while i < len(self.stream) - number_of_item_to_check:
+            array_to_check = self.stream[i : i + number_of_item_to_check]
             if not self.is_doublon(array_to_check):
                 return i + number_of_item_to_check
             i += 1

@@ -9,5 +9,3 @@ def day8():
     datas.load_datas()
     print(f"{datas.count_visible_tree()} visibles trees")
     print(datas.sorted_tree_by_scenic_score())
-    coucou = ""
-

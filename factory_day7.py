@@ -2,7 +2,6 @@ import operator
 import os
 import re
 from enum import Enum
-from itertools import chain
 from typing import List, Dict
 
 import requests
@@ -23,7 +22,7 @@ class Node(object):
         self.path = path
         self.size = size
         self.node_type = node_type
-        if path in ( "", "/" ):
+        if path in ("", "/"):
             index = f"{path}{name}"
         else:
             index = f"{path}/{name}"
@@ -43,23 +42,31 @@ class FileSystem(object):
         self.if_not_exist_create_dir_or_file("", "/", TypeNode["DIRECTORY"].value)
 
     def sorted_directories_by_size(self) -> List[Node]:
-        directories = [node for index, node in self.nodes.items() if node.node_type == TypeNode["DIRECTORY"].value]
-        return sorted(directories, key=operator.attrgetter('size'), reverse=True)
-    def display_nodes(self):
-        for index, node in self.nodes.items() :
-            print(f" -type: {node.node_type} - index - index: {index} - index: {node.index}  name: {node.name} - path: {node.path} - size: {node.size} ")
+        directories = [
+            node
+            for index, node in self.nodes.items()
+            if node.node_type == TypeNode["DIRECTORY"].value
+        ]
+        return sorted(directories, key=operator.attrgetter("size"), reverse=True)
 
+    def display_nodes(self):
+        for index, node in self.nodes.items():
+            print(
+                f" -type: {node.node_type} - index - index: {index} - index: {node.index}  name: {node.name} - path: {node.path} - size: {node.size} "
+            )
 
     def sum_file_nodes_into_path(self, path_plus_name):
-        return sum([
-            node.size
-            for index, node in self.nodes.items()
-            if (not re.match(f"^{path_plus_name}", node.path) == None)
-            and node.node_type == TypeNode["FILE"].value
-        ])
+        return sum(
+            [
+                node.size
+                for index, node in self.nodes.items()
+                if (not re.match(f"^{path_plus_name}", node.path) is None)
+                and node.node_type == TypeNode["FILE"].value
+            ]
+        )
 
     def if_not_exist_create_dir_or_file(self, path, name, node_type, size=0):
-        if path in ( "", "/" ):
+        if path in ("", "/"):
             index = f"{path}{name}"
         else:
             index = f"{path}/{name}"
@@ -67,25 +74,15 @@ class FileSystem(object):
             self.nodes[index] = Node(name, path, node_type, size)
 
     def load_datas(self):
-        ligne = 1
         request_to_load = requests.get(
             self.url_to_load, cookies=COOKIES, headers=HEADERS
         )
         datas_text = request_to_load.text.replace(" ", "-")
-        # $-cd - jdh
-        # $-ls
-        # dir - wjzzvs
-        # $-cd - wjzzvs
-        # $-ls
-        # 135287 - rpglpmr.zbh
-        # $-cd -..
         pwd = []
         for instruction in datas_text.split(sep=None):
-            # ligne += 1
-            # if ligne == 24:
-            #     break
+
             if instruction[:4] == "$-cd":
-                cd_match = re.match("\$-cd-(.*?)$", instruction)
+                cd_match = re.match("\$-cd-(.*?)$", instruction) # noqa
                 directory_name = cd_match.group(1)
                 if directory_name not in ("/", ".."):
                     pwd.append(directory_name)
@@ -110,7 +107,7 @@ class FileSystem(object):
                 )
                 continue
 
-            file_match = re.match("(\d+)-(.*?)$", instruction)
+            file_match = re.match("(\d+)-(.*?)$", instruction) # noqa
             print(
                 f"name file: {file_match.group(2)}- taille: {file_match.group(1)}- pwd: {'/'.join(pwd)}"
             )
@@ -124,10 +121,14 @@ class FileSystem(object):
             )
         self.populate_size_of_directories()
 
-        #self.display_nodes()
+        # self.display_nodes()
 
     def populate_size_of_directories(self):
-        directories = [node for index, node in self.nodes.items() if node.node_type == TypeNode["DIRECTORY"].value]
+        directories = [
+            node
+            for index, node in self.nodes.items()
+            if node.node_type == TypeNode["DIRECTORY"].value
+        ]
         for directory in directories:
             if directory.path in ("", "/"):
                 index = f"{directory.path}{directory.name}"
