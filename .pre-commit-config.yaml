@@ -1,4 +1,9 @@
 repos:
+-   repo: https://github.com/ambv/black
+    rev: 22.3.0
+    hooks:
+      - id: black
+        exclude: "(env)"
 -   repo: https://github.com/pycqa/flake8
     rev: 3.9.0
     hooks:

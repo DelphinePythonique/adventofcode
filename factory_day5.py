@@ -110,7 +110,7 @@ class Moves(object):
                 datas_position = False
             if datas_position:
                 positions_match = re.match(
-                    "(\w+|---)-(\w+|---)-(\w+|---)-(\w+|---)-(\w+|---)-(\w+|---)-(\w+|---)-(\w+|---)-(\w+|---)", # noqa
+                    "(\w+|---)-(\w+|---)-(\w+|---)-(\w+|---)-(\w+|---)-(\w+|---)-(\w+|---)-(\w+|---)-(\w+|---)",  # noqa
                     data_text,
                 )
                 positions.append(
@@ -129,7 +129,7 @@ class Moves(object):
 
             if data_text[:4] == "move":
                 moves_match = re.match(
-                    "move-(\d+)-from-(\d+)-to-(\d+)", # noqa
+                    "move-(\d+)-from-(\d+)-to-(\d+)",  # noqa
                     data_text,
                 )
                 moves.append(
