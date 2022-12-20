@@ -1,11 +1,8 @@
-import os
 import re
 
 import requests
 
-SESSION_COOKIE = os.environ["SESSION_COOKIE"]
-COOKIES = {"session": SESSION_COOKIE}
-HEADERS = {"User-Agent": "USER_AGENT"}
+from connect import COOKIES, HEADERS
 
 DATAS_DAY4_URL = "https://adventofcode.com/2022/day/4/input"
 

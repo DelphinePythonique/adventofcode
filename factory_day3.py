@@ -1,12 +1,9 @@
-import os
 from enum import Enum
 from itertools import chain
 
 import requests
 
-SESSION_COOKIE = os.environ["SESSION_COOKIE"]
-COOKIES = {"session": SESSION_COOKIE}
-HEADERS = {"User-Agent": "USER_AGENT"}
+from connect import COOKIES, HEADERS
 
 DATAS_DAY3_URL = "https://adventofcode.com/2022/day/3/input"
 

@@ -1,12 +1,9 @@
-import os
 import re
 from enum import Enum
 
 import requests
 
-SESSION_COOKIE = os.environ["SESSION_COOKIE"]
-COOKIES = {"session": SESSION_COOKIE}
-HEADERS = {"User-Agent": "USER_AGENT"}
+from connect import COOKIES, HEADERS
 
 DATAS_DAY2_URL = "https://adventofcode.com/2022/day/2/input"
 
@@ -135,5 +132,5 @@ class Rounds(object):
     def gain(self):
         gain = 0
         for round in self.rounds:
-            gain += round.sum_priorities
+            gain += round.gain
         return gain

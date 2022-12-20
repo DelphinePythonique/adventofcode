@@ -1,10 +1,6 @@
-import os
-
 import requests
 
-SESSION_COOKIE = os.environ["SESSION_COOKIE"]
-COOKIES = {"session": SESSION_COOKIE}
-HEADERS = {"User-Agent": "USER_AGENT"}
+from connect import COOKIES, HEADERS
 
 NUMBER_ITEM_TO_CHECK = 4
 

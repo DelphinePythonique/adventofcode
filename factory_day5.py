@@ -1,13 +1,10 @@
-import os
 import re
 from enum import Enum
 from typing import List
 
 import requests
 
-SESSION_COOKIE = os.environ["SESSION_COOKIE"]
-COOKIES = {"session": SESSION_COOKIE}
-HEADERS = {"User-Agent": "USER_AGENT"}
+from connect import COOKIES, HEADERS
 
 DATAS_DAY5_URL = "https://adventofcode.com/2022/day/5/input"
 
